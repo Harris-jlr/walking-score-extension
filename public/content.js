@@ -48,15 +48,27 @@ function insertWalkingScoreBadge() {
 
 // ✅ Extracts the correct numeric companyId from LinkedIn's metadata
 function extractCompanyId() {
-  let employeeLink = document.querySelector("a[href*='currentCompany=%5B%22']");
-  if (employeeLink) {
-      let match = employeeLink.href.match(/currentCompany=%5B%22(\d+)%22%5D/);
+  let companyId = null;
+
+  // Method 1: Try to get it from LinkedIn's company URL
+  if (window.location.href.includes("/company/")) {
+      let match = window.location.href.match(/\/company\/(\d+)/);
       if (match) {
-          console.log("✅ Extracted Company ID:", match[1]);
-          return match[1]; // Extracted company ID
+          companyId = match[1];
       }
   }
-  console.error("❌ Company ID not found in employee link.");
-  return null;
+
+  // Method 2: Try getting company ID from search results link
+  let searchLink = document.querySelector("a[href*='currentCompany']");
+  if (!companyId && searchLink) {
+      let match = searchLink.href.match(/currentCompany=%5B%22(\d+)%22%5D/);
+      if (match) {
+          companyId = match[1];
+      }
+  }
+
+  console.log("🔍 Extracted companyId:", companyId);
+  return companyId;
 }
+
 
