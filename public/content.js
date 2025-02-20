@@ -22,19 +22,23 @@ function insertWalkingScoreBadge() {
       // Extract companyId
       let companyId = window.location.href.split("/company/")[1]?.split("/")[0];
 
-      if (!companyId) {
+      if (!companyId || isNaN(companyId)) {
+          console.error("Error: Invalid companyId detected", companyId);
           badge.innerText = "Error: Company ID not found";
           return;
       }
 
-      // Send message to background.js to fetch Walking Score
+      console.log("Sending companyId:", companyId);  // Debugging log
+
+      // Send message to background.js
       chrome.runtime.sendMessage(
           { action: "getWalkingScore", companyId: companyId },
           function (response) {
               if (chrome.runtime.lastError) {
-                  console.error("Error:", chrome.runtime.lastError.message);
+                  console.error("Chrome Runtime Error:", chrome.runtime.lastError.message);
                   badge.innerText = "Error fetching score";
               } else {
+                  console.log("Received response:", response);
                   badge.innerText = `Walking Score: ${response.score || "N/A"}`;
               }
           }
