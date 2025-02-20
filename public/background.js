@@ -28,7 +28,13 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 async function fetchWalkingScore(companyId) {
   try {
       console.log("🌍 Fetching walking score for companyId:", companyId);
-      let response = await fetch(`https://walking-score-extension-api.onrender.com/score/${companyId}`);
+
+      let response = await fetch(`https://walking-score-extension-api.onrender.com/score/${companyId}`, {
+          method: "GET",
+          headers: {
+              "Content-Type": "application/json"
+          }
+      });
 
       if (!response.ok) throw new Error("Network response was not ok");
 
