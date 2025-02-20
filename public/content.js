@@ -20,7 +20,6 @@ function insertWalkingScoreBadge() {
 
       companyHeader.appendChild(badge);
 
-      // ✅ Extract LinkedIn Company ID correctly
       let companyId = extractCompanyId();
 
       if (!companyId || isNaN(companyId)) {
