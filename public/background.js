@@ -1,12 +1,12 @@
-async function fetchCredibilityScore(companyId) {
+async function fetchWalkingScore(companyId) {
   try {
-      let response = await fetch(`http://localhost:5000/score/${companyId}`);
-      if (!response.ok) throw new Error("Network response was not ok");
-      let data = await response.json();
-      return data;
+    let response = await fetch(`https://walking-score-extension-api.onrender.com/score/${companyId}`);
+    if (!response.ok) throw new Error("Network response was not ok");
+    let data = await response.json();
+    return data.score;
   } catch (error) {
-      console.error("Error fetching Credibility Score:", error);
-      return { score: "N/A", rating: "Error" };
+    console.error("Error fetching Walking Score:", error);
+    return "Error";
   }
 }
 
@@ -14,13 +14,16 @@ async function fetchCredibilityScore(companyId) {
 // Now, use it inside the listener
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === "getWalkingScore") {
-      fetchWalkingScore(request.companyId)
-          .then(score => sendResponse({ score }))
-          .catch(error => {
-              console.error("Error fetching score:", error);
-              sendResponse({ score: "Error" });
-          });
-      return true;  // Keeps the message channel open for async response
+    
+    // Call fetchWalkingScore asynchronously
+    fetchWalkingScore(request.companyId)
+      .then(score => sendResponse({ score })) // Send response if successful
+      .catch(error => {
+          console.error("Error fetching score:", error);
+          sendResponse({ score: "Error" }); // Send "Error" if there's an issue
+      });
+
+    return true;  // Keeps the message channel open for async response
   }
 });
 
