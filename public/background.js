@@ -19,11 +19,12 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
 });
 
-// Function to fetch Walking Score from your API
+// ✅ Connect the extension to YOUR API
 async function fetchWalkingScore(companyId) {
   try {
       console.log("Fetching walking score for companyId:", companyId);
       let response = await fetch(`https://walking-score-extension-api.onrender.com/score/${companyId}`);
+
       if (!response.ok) throw new Error("Network response was not ok");
 
       let data = await response.json();

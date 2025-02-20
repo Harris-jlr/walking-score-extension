@@ -19,7 +19,7 @@ function insertWalkingScoreBadge() {
 
       companyHeader.appendChild(badge);
 
-      // Extract companyId
+      // Extract companyId from URL
       let companyId = window.location.href.split("/company/")[1]?.split("/")[0];
 
       if (!companyId || isNaN(companyId)) {
@@ -28,7 +28,7 @@ function insertWalkingScoreBadge() {
           return;
       }
 
-      console.log("Sending companyId:", companyId);  // Debugging log
+      console.log("Sending companyId:", companyId);
 
       // Send message to background.js
       chrome.runtime.sendMessage(
