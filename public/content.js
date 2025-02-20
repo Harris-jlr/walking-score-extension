@@ -10,7 +10,7 @@ function insertWalkingScoreBadge() {
       let badge = document.createElement("div");
       badge.id = "walking-score-badge";
       badge.innerText = "Walking Score: Loading...";
-      badge.style.background = "#0073b1"; // LinkedIn blue
+      badge.style.background = "#0073b1";  // LinkedIn blue
       badge.style.color = "white";
       badge.style.padding = "8px";
       badge.style.borderRadius = "5px";
@@ -19,18 +19,18 @@ function insertWalkingScoreBadge() {
 
       companyHeader.appendChild(badge);
 
-      // Extract companyId from URL
-      let companyId = window.location.href.split("/company/")[1]?.split("/")[0];
+      // ✅ Extract LinkedIn Company ID (Handles both numeric and name-based URLs)
+      let companyId = extractCompanyId();
 
       if (!companyId || isNaN(companyId)) {
-          console.error("Error: Invalid companyId detected", companyId);
+          console.error("Error: Could not extract valid companyId", companyId);
           badge.innerText = "Error: Company ID not found";
           return;
       }
 
-      console.log("Sending companyId:", companyId);
+      console.log("Extracted companyId:", companyId);
 
-      // Send message to background.js
+      // ✅ Send companyId to background script
       chrome.runtime.sendMessage(
           { action: "getWalkingScore", companyId: companyId },
           function (response) {
@@ -44,4 +44,18 @@ function insertWalkingScoreBadge() {
           }
       );
   }
+}
+
+// ✅ Extract the numeric companyId from LinkedIn's metadata
+function extractCompanyId() {
+  let metaTag = document.querySelector("meta[property='lnkd:organization']");
+
+  if (metaTag) {
+      let companyId = metaTag.getAttribute("content");
+      console.log("Meta Tag companyId:", companyId);
+      return companyId;
+  }
+
+  console.error("Company ID meta tag not found.");
+  return null;
 }
