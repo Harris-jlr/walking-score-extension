@@ -5,9 +5,9 @@
       "48": "icons/cs_48.png",
       "128": "icons/cs_128.png"
     },
-    "name": "Walking Score for LinkedIn",
+    "name": "Credibility Score for Companies on LinkedIn",
     "version": "1.0",
-    "description": "Overlay a Walking Score on LinkedIn company profiles.",
+    "description": "Overlay a Credibility Score for LinkedIn company profiles.",
     "permissions": ["storage", "activeTab", "scripting"],
     "host_permissions": ["https://www.linkedin.com/*"],
     "background": {
