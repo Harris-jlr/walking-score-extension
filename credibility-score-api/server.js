@@ -1,29 +1,17 @@
 const express = require("express");
 const cors = require("cors");
-
 const app = express();
 
-// ✅ Allow requests from your Chrome extension
-app.use(cors({
-    origin: "*", // Change to a specific origin for better security
-    methods: ["GET", "POST"],
-    allowedHeaders: ["Content-Type"]
-}));
+app.use(cors({ origin: "*" })); // 🔥 Allow all origins (Fixes CORS)
 
-// ✅ API Endpoint to fetch Walking Score
 app.get("/score/:companyId", (req, res) => {
     const companyId = req.params.companyId;
+    console.log(`Received request for companyId: ${companyId}`);
 
-    // ✅ Make sure `companyId` is valid
-    if (!companyId || companyId === "undefined") {
-        return res.status(400).json({ error: "Invalid Company ID" });
-    }
-
-    // ✅ Mock response (Replace with real logic later)
-    const score = Math.floor(Math.random() * 100); 
-    res.json({ score });
+    // Example static score (replace this with actual score logic)
+    const score = Math.floor(Math.random() * 100);
+    res.json({ companyId, score });
 });
 
-// ✅ Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
